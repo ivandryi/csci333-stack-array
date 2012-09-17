@@ -1,9 +1,11 @@
 #include "Stack.h"
 #include <iostream>
+#include <assert.h>
 
 Stack::Stack(int initialSize) {
   theStack = new int[initialSize];
   top = 0;
+  capacity = initialSize;
 }
 
 Stack::~Stack() {
@@ -11,13 +13,24 @@ Stack::~Stack() {
 }
 
 void Stack::push(int value) {
+  // assert (top != capacity);
+
   //if theStack is full
   // create new stack twice as big
   // copy all elements to new stack
   // delete old stack
   // point old stack pointer to new stack
-  theStack[top] = value;
-  top++;
+
+  if (top == capacity) {
+    capacity = capacity * 2;
+    int* newStack = new int[capacity];
+    for (int i = 0; i < capacity; ++i)
+      newStack[i] = theStack[i];
+    delete[] theStack;
+    theStack = newStack;
+  }
+    theStack[top] = value;
+    top++;
 }
 
 int Stack::pop() {
